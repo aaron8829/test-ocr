@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户登录</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: "Nunito", "PingFang SC", "Microsoft Yahei", sans-serif;
+        --bg-gradient-start: #4facfe;
+        --bg-gradient-end: #00f2fe;
+        --card-bg: rgba(255, 255, 255, 0.9);
+        --text-color: #1b1c1d;
+        --muted-color: #6b7280;
+        --input-bg: rgba(255, 255, 255, 0.8);
+        --input-border: rgba(148, 163, 184, 0.6);
+        --input-focus-border: #4f46e5;
+        --shadow-color: rgba(15, 23, 42, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+        color: var(--text-color);
+      }
+
+      .login-card {
+        width: min(420px, 92vw);
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        box-shadow: 0 30px 60px -20px var(--shadow-color);
+        padding: 36px 40px 42px;
+      }
+
+      h1 {
+        margin-top: 0;
+        font-size: clamp(1.8rem, 3vw, 2.2rem);
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      p.subtitle {
+        margin-top: 6px;
+        margin-bottom: 28px;
+        color: var(--muted-color);
+        font-size: 0.95rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .input-group {
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid var(--input-border);
+        padding: 14px 16px;
+        font-size: 1rem;
+        background: var(--input-bg);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--input-focus-border);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--muted-color);
+        font-size: 0.9rem;
+      }
+
+      .options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        font-size: 0.9rem;
+        color: var(--muted-color);
+      }
+
+      .options a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .options a:hover {
+        text-decoration: underline;
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        border: none;
+        border-radius: 16px;
+        padding: 14px;
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        background: linear-gradient(135deg, #4f46e5, #06b6d4);
+        color: #f8fafc;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button[type="submit"]:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 32px -18px rgba(2, 132, 199, 0.6);
+      }
+
+      button[type="submit"]:active {
+        transform: translateY(0);
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 26px 0;
+        color: var(--muted-color);
+        font-size: 0.9rem;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background-color: rgba(148, 163, 184, 0.5);
+      }
+
+      .social-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 14px;
+      }
+
+      .social-button {
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        border-radius: 14px;
+        padding: 10px 14px;
+        background-color: rgba(255, 255, 255, 0.75);
+        font-weight: 600;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .social-button:hover {
+        border-color: rgba(37, 99, 235, 0.7);
+        box-shadow: 0 10px 20px -12px rgba(37, 99, 235, 0.6);
+      }
+
+      .form-feedback {
+        margin-top: 16px;
+        font-size: 0.92rem;
+        color: #b91c1c;
+        min-height: 1.2em;
+      }
+
+      footer {
+        margin-top: 36px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: rgba(15, 23, 42, 0.6);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --card-bg: rgba(15, 23, 42, 0.76);
+          --text-color: #f8fafc;
+          --muted-color: #cbd5f5;
+          --input-bg: rgba(15, 23, 42, 0.6);
+          --input-border: rgba(148, 163, 184, 0.4);
+          --shadow-color: rgba(15, 23, 42, 0.45);
+        }
+
+        .social-button {
+          background-color: rgba(15, 23, 42, 0.6);
+        }
+
+        footer {
+          color: rgba(226, 232, 240, 0.7);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="login-card">
+      <section>
+        <h1>欢迎回来 👋</h1>
+        <p class="subtitle">请输入您的账号信息继续使用服务</p>
+        <form id="login-form" novalidate>
+          <div class="input-group">
+            <label for="email">邮箱地址</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="name@example.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <div class="input-group">
+            <label for="password">密码</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="至少 8 位字符"
+              required
+              minlength="8"
+              autocomplete="current-password"
+            />
+            <button type="button" class="toggle-password" aria-label="显示或隐藏密码">
+              显示
+            </button>
+          </div>
+          <div class="options">
+            <label>
+              <input type="checkbox" name="remember" /> 记住我
+            </label>
+            <a href="#">忘记密码？</a>
+          </div>
+          <button type="submit">登录</button>
+          <div class="form-feedback" id="form-feedback" role="alert" aria-live="polite"></div>
+        </form>
+      </section>
+      <section>
+        <p class="divider">或继续使用</p>
+        <div class="social-buttons">
+          <button class="social-button" type="button">使用微信登录</button>
+          <button class="social-button" type="button">使用企业邮箱</button>
+        </div>
+      </section>
+      <footer>还没有账号？<a href="#">立即注册</a></footer>
+    </main>
+
+    <script>
+      const form = document.getElementById("login-form");
+      const feedback = document.getElementById("form-feedback");
+      const togglePassword = document.querySelector(".toggle-password");
+      const passwordInput = document.getElementById("password");
+
+      togglePassword.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        togglePassword.textContent = isPassword ? "隐藏" : "显示";
+        passwordInput.focus({ preventScroll: true });
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        feedback.textContent = "";
+        const formData = new FormData(form);
+        const email = formData.get("email").trim();
+        const password = formData.get("password");
+
+        if (!email || !password) {
+          feedback.textContent = "请输入邮箱和密码";
+          return;
+        }
+
+        if (password.length < 8) {
+          feedback.textContent = "密码长度至少需要 8 位";
+          return;
+        }
+
+        // 模拟登录请求
+        feedback.style.color = "#047857";
+        feedback.textContent = "登录成功，正在为您跳转...";
+
+        setTimeout(() => {
+          feedback.textContent = "";
+          feedback.style.color = "#b91c1c";
+          alert(`欢迎回来，${email}!`);
+          form.reset();
+          togglePassword.textContent = "显示";
+          passwordInput.type = "password";
+        }, 1200);
+      });
+    </script>
+  </body>
+</html>
